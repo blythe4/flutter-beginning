@@ -43,6 +43,7 @@ dependencies:
   slider_button: ^2.0.0
   web3dart: ^2.3.5
   flutter_logs: ^2.1.7
+  fluttertoast: ^8.0.9
 
 dev_dependencies:
   flutter_test:
