@@ -5,6 +5,7 @@ import 'package:newflutter/pages/login_page.dart';
 import 'package:newflutter/pages/card.dart';
 import 'package:newflutter/pages/appbar.dart';
 import 'package:newflutter/pages/snackbar.dart';
+import 'package:newflutter/pages/toastmessage.dart';
 import 'package:flutter_logs/flutter_logs.dart';
 
 void main(List<String> args) async {
@@ -41,15 +42,16 @@ class MMCApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        theme: ThemeData(
-          primarySwatch: Colors.red,
-        ),
-        initialRoute: MyRoutes.snackbarRoute,
+        // theme: ThemeData(
+        //   primarySwatch: Colors.red,
+        // ),
+        initialRoute: MyRoutes.toastMessageRoute,
         routes: {
           MyRoutes.loginRoute: (context) => const LoginPage(),
           MyRoutes.cardRoute: (context) => const CharacterCard(),
           MyRoutes.appbarRoute: (context) => const AppBarTest(),
           MyRoutes.snackbarRoute: (context) => const SnackBarTest(),
+          MyRoutes.toastMessageRoute: (context) => const ToastMessageTest(),
         });
   }
 }

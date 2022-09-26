@@ -16,26 +16,27 @@ class _SnackBarTestState extends State<SnackBarTest> {
         centerTitle: true,
         elevation: 0,
       ),
-      body: Builder(
-        builder: (BuildContext ctx) {
-          return Center(
-            child: TextButton(
-              child: (Text("Show me")),
-              style: TextButton.styleFrom(
-                backgroundColor: Colors.red,
-                foregroundColor: Colors.white,
-                padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                textStyle: TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-              onPressed: () => {
-                ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
-                  content: Text("Hello"),
-                ))
-              },
+      body: MySnackBar(),
+    );
+  }
+}
+
+class MySnackBar extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: ElevatedButton(
+        child: Text("Show me"),
+        onPressed: () => {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+              "Helloooooow",
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white),
             ),
-          );
+            backgroundColor: Colors.teal,
+            duration: Duration(microseconds: 1000),
+          ))
         },
       ),
     );
