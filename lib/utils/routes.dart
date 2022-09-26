@@ -4,4 +4,5 @@ class MyRoutes {
   static String appbarRoute = '/appbar';
   static String snackbarRoute = '/snackbar';
   static String toastMessageRoute = '/toast';
+  static String containerRoute = '/container';
 }
