@@ -6,7 +6,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:slider_button/slider_button.dart';
-import 'package:flutter_logs/flutter_logs.dart';
+// import 'package:flutter_logs/flutter_logs.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -31,31 +31,36 @@ class _LoginPageState extends State<LoginPage> {
   loginUsingMetamask(BuildContext context) async {
     if (!connector.connected) {
       try {
-        var session = await connector.createSession(onDisplayUri: (uri) async {
-          _uri = uri;
-          print(uri);
-          FlutterLogs.logInfo("loginMetamask Button", "get uri", uri);
-          try {
-            await launchUrl(Uri.parse(uri), mode: LaunchMode.platformDefault);
-            FlutterLogs.logInfo("Metamask App Connect", "Connect", "Connect");
-          } catch (exp) {
-            // metamask App install
-            if (Platform.isAndroid) {
-              // Android-specific code
-              await launchUrl(
-                  Uri.parse(
-                      'https://play.google.com/store/apps/details?id=io.metamask&hl=ko&gl=US'),
-                  mode: LaunchMode.externalApplication);
-            } else if (Platform.isIOS) {
-              // iOS-specific code
-              await launchUrl(
-                  Uri.parse(
-                      'https://apps.apple.com/us/app/metamask-blockchain-wallet/id1438144202'),
-                  mode: LaunchMode.externalApplication);
-            }
-            print(exp);
-          }
-        });
+        var session = await connector.createSession(
+            chainId: 137,
+            onDisplayUri: (uri) async {
+              _uri = uri;
+              print(uri);
+              // FlutterLogs.logInfo("loginMetamask Button", "get uri", uri);
+              try {
+                await launchUrl(Uri.parse(uri),
+                    mode: LaunchMode.platformDefault);
+                // FlutterLogs.logInfo(
+                //     "Metamask App Connect", "Connect", "Connect");
+              } catch (exp) {
+                // metamask App install
+                if (Platform.isAndroid) {
+                  // Android-specific code
+                  await launchUrl(
+                      Uri.parse(
+                          'https://play.google.com/store/apps/details?id=io.metamask&hl=ko&gl=US'),
+                      mode: LaunchMode.externalApplication);
+                } else if (Platform.isIOS) {
+                  // iOS-specific code
+                  await launchUrl(
+                      Uri.parse(
+                          'https://apps.apple.com/us/app/metamask-blockchain-wallet/id1438144202'),
+                      mode: LaunchMode.externalApplication);
+                }
+                print(exp);
+              }
+            });
+        print(session);
         setState(() {
           _session = session;
         });
@@ -88,16 +93,27 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   disconnectMetamask() {
-    connector.killSession();
-    connector = WalletConnect(
-        bridge: 'https://bridge.walletconnect.org',
-        clientMeta: const PeerMeta(
-            name: 'My MMCApp',
-            description: 'An app for converting pictures to NFT',
-            url: 'https://walletconnect.org',
-            icons: [
-              'https://files.gitbook.com/v0/b/gitbook-legacy-files/o/spaces%2F-LJJeCjcLrr53DcT1Ml7%2Favatar.png?alt=media'
-            ]));
+    if (connector.connected) {
+      _session = null;
+      connector.killSession();
+      connector = WalletConnect(
+          bridge: 'https://bridge.walletconnect.org',
+          clientMeta: const PeerMeta(
+              name: 'My MMCApp',
+              description: 'An app for converting pictures to NFT',
+              url: 'https://walletconnect.org',
+              icons: [
+                'https://files.gitbook.com/v0/b/gitbook-legacy-files/o/spaces%2F-LJJeCjcLrr53DcT1Ml7%2Favatar.png?alt=media'
+              ]));
+    }
+  }
+
+  changeNetwork() async {
+    await connector.updateSession(
+        SessionStatus(chainId: 137, accounts: _session.accounts[0]));
+    print('changeNetwork1');
+    // connector.approveSession(accounts: _session.accounts, chainId: 137);
+    print('changeNetwork2');
   }
 
   getNetworkName(chainId) {
@@ -170,6 +186,14 @@ class _LoginPageState extends State<LoginPage> {
                                   onPressed: () => disconnectMetamask(),
                                   child:
                                       const Text("Disconnect with Metamask")),
+                            ],
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              ElevatedButton(
+                                  onPressed: () => changeNetwork(),
+                                  child: const Text("Change Network")),
                             ],
                           ),
                           Text(
@@ -245,6 +269,7 @@ class _LoginPageState extends State<LoginPage> {
                                         SliderButton(
                                           action: () async {
                                             // TODO: Navigate to main page
+                                            print('slide');
                                           },
                                           label: const Text('Slide to login'),
                                           icon: const Icon(Icons.check),

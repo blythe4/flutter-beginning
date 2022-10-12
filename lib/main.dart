@@ -7,6 +7,7 @@ import 'package:newflutter/pages/appbar.dart';
 import 'package:newflutter/pages/snackbar.dart';
 import 'package:newflutter/pages/toastmessage.dart';
 import 'package:newflutter/pages/container_widget.dart';
+import 'package:newflutter/pages/inAppPurchase.dart';
 import 'package:flutter_logs/flutter_logs.dart';
 
 void main(List<String> args) async {
@@ -46,7 +47,7 @@ class MMCApp extends StatelessWidget {
         // theme: ThemeData(
         //   primarySwatch: Colors.red,
         // ),
-        initialRoute: MyRoutes.containerRoute,
+        initialRoute: MyRoutes.purchaseRoute,
         routes: {
           MyRoutes.loginRoute: (context) => const LoginPage(),
           MyRoutes.cardRoute: (context) => const CharacterCard(),
@@ -54,6 +55,7 @@ class MMCApp extends StatelessWidget {
           MyRoutes.snackbarRoute: (context) => const SnackBarTest(),
           MyRoutes.toastMessageRoute: (context) => const ToastMessageTest(),
           MyRoutes.containerRoute: (context) => const containerWidgetTest(),
+          MyRoutes.purchaseRoute: (context) => const InAppPurchaseTest(),
         });
   }
 }
