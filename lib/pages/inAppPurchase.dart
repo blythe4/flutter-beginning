@@ -133,7 +133,7 @@ class _InAppPurchaseTestState extends State<InAppPurchaseTest> {
             _buildConnectionCheckTile(),
             _buildProductList(),
             _buildConsumableBox(),
-            _buildRestoreButton(),
+            // _buildRestoreButton(), // 이전구매 복원
           ],
         ),
       );
@@ -313,6 +313,7 @@ class _InAppPurchaseTestState extends State<InAppPurchaseTest> {
     ]));
   }
 
+  // 이전 구매 복원
   Widget _buildRestoreButton() {
     if (_loading) {
       return Container();
@@ -389,6 +390,7 @@ class _InAppPurchaseTestState extends State<InAppPurchaseTest> {
 
     // 영수증 검증 api
     print(body);
+    await _inAppPurchase.completePurchase(purchaseDetails);
     return Future<bool>.value(true);
     // var data = await iapService(body);
     // if (data['status'] == true) {
